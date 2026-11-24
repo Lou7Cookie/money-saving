@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17251f">
+<title>My £700 Christmas Savings Tracker</title>
+<style>
+:root{color-scheme:dark;--bg:#101b18;--card:#1b2b25;--card2:#14231e;--line:#385044;--text:#fff8e9;--muted:#c0cdbf;--green:#a8d5a2;--green2:#d1edbd;--red:#e99a91;--gold:#f1cf87;--shadow:0 12px 32px #0004}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100dvh;padding:calc(18px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% -10%,#355443 0,#1b3028 35%,#101b18 78%);color:var(--text);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{width:100%;max-width:760px;margin:0 auto}
+.top{text-align:center;padding:8px 8px 19px;position:relative}
+.garland{font-size:clamp(1.2rem,5vw,1.8rem);letter-spacing:.13em;color:var(--green2);text-shadow:0 0 18px #b8e8aa55}
+.kicker{margin-top:7px;color:var(--gold);font-size:.76rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}
+h1{font-family:Georgia,serif;font-size:clamp(2.1rem,8vw,3.1rem);line-height:1.06;margin:7px 0;color:#fff4dc;font-weight:700}
+.subtitle{margin:9px 0 0;color:var(--muted);font-size:.95rem}
+.card{background:linear-gradient(145deg,#22372d,#192820);border:1px solid var(--line);border-radius:22px;padding:19px;margin:14px 0;box-shadow:var(--shadow)}
+.balance-label{color:var(--muted);font-weight:650;font-size:.94rem}
+.balance{font-size:clamp(2.8rem,12vw,4.2rem);line-height:1.13;letter-spacing:-.055em;font-weight:850;margin:5px 0 17px;font-variant-numeric:tabular-nums}
+.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.muted{color:var(--muted)}
+.progressbar{height:15px;background:#344b3d;border-radius:30px;overflow:hidden;margin:10px 0}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#86bd83,#d6eaa9);border-radius:30px;transition:width .3s}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.stat{background:#12221b;border:1px solid #344b3d;border-radius:14px;padding:12px;min-width:0}
+.stat small{display:block;color:var(--muted);font-size:.8rem}
+.stat strong{font-size:1.1rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.cheer{margin:15px 0 0;color:var(--green2);font-size:.9rem}
+h2{font-family:Georgia,serif;font-size:1.35rem;margin:0 0 14px;color:#fff1d7}
+.forms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.formbox{background:#14231e;border:1px solid #354d40;border-radius:17px;padding:15px;min-width:0}
+.formbox h3{margin:0 0 4px;font-size:1.02rem}
+.formbox p{font-size:.84rem;color:var(--muted);margin:0 0 12px}
+label{display:block;color:var(--muted);font-size:.84rem;font-weight:600;margin:11px 0 5px}
+input{display:block;width:100%;min-width:0;min-height:48px;padding:11px 12px;border:1px solid #526957;border-radius:11px;background:#0e1b15;color:var(--text);font:inherit;font-size:16px; /* avoids Android/iOS zoom */ }
+input::placeholder{color:#91a295}
+input:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button{min-height:48px;border:0;border-radius:12px;padding:11px 15px;background:var(--green);color:#15261b;font:750 .96rem system-ui;cursor:pointer;touch-action:manipulation}
+button:active{transform:scale(.985)}
+.submit{width:100%;margin-top:13px;background:linear-gradient(135deg,#c9e6ad,#91c58f)}
+.historytop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:5px}
+.historytop h2{margin:0}
+.secondary{background:#344b3d;color:#fff4dc;border:1px solid #526957}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.tools button{flex:1 1 130px}
+.entry{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #354b3e}
+.entry:last-child{border-bottom:0}
+.symbol{width:40px;height:40px;display:grid;place-items:center;background:#2c4939;border-radius:13px;flex-shrink:0;font-size:1.1rem}
+.details{flex:1;min-width:0}
+.name{font-weight:750;overflow-wrap:anywhere}
+.date{font-size:.79rem;color:var(--muted)}
+.right{text-align:right;white-space:nowrap}
+.amount{font-weight:850;color:var(--green2);font-variant-numeric:tabular-nums}
+.delete{min-height:36px;padding:5px 9px;margin-top:4px;background:transparent;border:1px solid #825a54;color:#ffd0c8;font-size:.78rem}
+.empty{text-align:center;color:var(--muted);padding:23px 6px}
+.save-status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.8rem;margin-top:13px}
+.save-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px #a8d5a2}
+.footer{text-align:center;color:#aebdaf;font-size:.78rem;margin:17px 8px 0}
+.snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1;opacity:.35}
+.snow span{position:absolute;top:-30px;color:#fff8e9;animation:fall linear infinite}
+.snow span:nth-child(1){left:8%;animation-duration:17s;font-size:13px}.snow span:nth-child(2){left:24%;animation-duration:22s;animation-delay:-8s;font-size:9px}.snow span:nth-child(3){left:46%;animation-duration:19s;animation-delay:-3s;font-size:15px}.snow span:nth-child(4){left:68%;animation-duration:24s;animation-delay:-13s;font-size:10px}.snow span:nth-child(5){left:88%;animation-duration:20s;animation-delay:-5s;font-size:14px}
+@keyframes fall{to{transform:translateY(110vh) rotate(260deg)}}
+@media(max-width:620px){body{padding-left:12px;padding-right:12px}.forms{grid-template-columns:1fr}.card{padding:16px;border-radius:19px}.top{padding-bottom:14px}.historytop{align-items:flex-start}.historytop h2{font-size:1.22rem}.historytop button{font-size:.82rem;padding:8px 10px;min-height:44px}.entry{gap:8px}.symbol{width:36px;height:36px}.delete{min-height:34px}}
+@media(max-width:360px){.stats{gap:7px}.stat{padding:9px}.stat strong{font-size:1rem}.card{padding:14px}.historytop{flex-direction:column}.historytop button{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="snow" aria-hidden="true"><span>❄</span><span>✧</span><span>❄</span><span>✦</span><span>❄</span></div>
+<main>
+<header class="top">
+ <div class="garland" aria-hidden="true">✦ 🎄 ✦ 🎄 ✦</div>
+ <div class="kicker">A little festive savings journey</div>
+ <h1>My £700 Goal</h1>
+ <p class="subtitle">One sale at a time, one step closer. ☕</p>
+</header>
+<section class="card" aria-label="Savings progress">
+ <div class="balance-label">🎁 Your savings total</div>
+ <div class="balance" id="balance">£0.00</div>
+ <div class="between"><span class="muted">Progress to your goal</span><strong id="percent">0%</strong></div>
+ <div class="progressbar" role="progressbar" aria-label="Savings progress" aria-valuemin="0" aria-valuemax="700" aria-valuenow="0" id="progress"><div class="fill" id="fill"></div></div>
+ <div class="between muted"><span id="left">£700.00 left to save</span><span>£700.00</span></div>
+ <div class="stats">
+  <div class="stat"><small>🛍️ From sales</small><strong id="sales">£0.00</strong></div>
+  <div class="stat"><small>💰 Other savings</small><strong id="other">£0.00</strong></div>
+ </div>
+ <p class="cheer" id="cheer">Get cosy, take your time, and watch it grow. ✨</p>
+ <div class="save-status"><span class="save-dot"></span><span id="saveStatus">Saved on this device</span></div>
+</section>
+<section class="card">
+ <h2>Add to your savings</h2>
+ <div class="forms">
+  <form class="formbox" id="saleForm">
+   <h3>🛍️ I sold something</h3><p>Keep a record so you can remember what you sold.</p>
+   <label for="item">What did you sell?</label><input id="item" maxlength="70" placeholder="e.g. An old game" required autocomplete="off">
+   <label for="saleAmount">How much did you get? (£)</label><input id="saleAmount" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="15.00" required>
+   <button class="submit" type="submit">＋ Add sale</button>
+  </form>
+  <form class="formbox" id="otherForm">
+   <h3>💷 I saved some money</h3><p>For pocket money, gifts, or other savings.</p>
+   <label for="source">Where did it come from?</label><input id="source" maxlength="70" placeholder="e.g. Pocket money" autocomplete="off">
+   <label for="otherAmount">How much? (£)</label><input id="otherAmount" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="5.00" required>
+   <button class="submit" type="submit">＋ Add money</button>
+  </form>
+ </div>
+</section>
+<section class="card">
+ <div class="historytop"><h2>📜 My savings history</h2><button class="secondary" id="exportCsv" type="button">Export CSV</button></div>
+ <div id="history"><div class="empty">Your history will appear here. Add your first sale or savings entry above! 🎄</div></div>
+ <div class="tools">
+  <button class="secondary" id="backup" type="button">Download backup</button>
+  <button class="secondary" id="restore" type="button">Restore backup</button>
+  <input id="restoreFile" type="file" accept="application/json,.json" hidden>
+ </div>
+</section>
+<p class="footer">Made for cosy saving days. ❄️<br>Your entries are stored in this browser on this device. Download a backup now and then, especially before changing phones or browsers.</p>
+</main>
+<script>
+(()=>{
+ 'use strict';
+ const KEY='my700Savings_v2';
+ const OLD_KEY='my700Savings_v1';
+ const $=id=>document.getElementById(id);
+ const money=n=>new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(n);
+ let entries=[];
+ function clean(data){
+  if(!Array.isArray(data))return [];
+  return data.filter(e=>e&&typeof e.title==='string'&&Number.isFinite(Number(e.amount))&&Number(e.amount)>0&&['sale','other'].includes(e.type))
+   .map(e=>({id:String(e.id||Date.now().toString(36)+Math.random().toString(36).slice(2)),type:e.type,title:e.title.slice(0,70),amount:Math.round(Number(e.amount)*100)/100,date:e.date&&Number.isFinite(Date.parse(e.date))?new Date(e.date).toISOString():new Date().toISOString()}));
+ }
+ try{
+  let raw=localStorage.getItem(KEY);
+  if(raw===null){const old=localStorage.getItem(OLD_KEY);if(old!==null){entries=clean(JSON.parse(old));localStorage.setItem(KEY,JSON.stringify(entries));}}
+  else entries=clean(JSON.parse(raw));
+ }catch{entries=[];}
+ function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(entries));$('saveStatus').textContent='Saved on this device · '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
+  catch{$('saveStatus').textContent='Could not save — please download a backup';alert('Your browser could not save the changes. Please download a backup and check your browser storage.');}
+ }
+ function render(){
+  const total=Math.round(entries.reduce((s,e)=>s+e.amount,0)*100)/100;
+  const sales=entries.filter(e=>e.type==='sale').reduce((s,e)=>s+e.amount,0);
+  const other=total-sales,pct=Math.min(100,total/700*100);
+  $('balance').textContent=money(total);$('sales').textContent=money(sales);$('other').textContent=money(other);
+  $('percent').textContent=(total/700*100).toFixed(1).replace(/\.0$/,'')+'%';
+  $('fill').style.width=pct+'%';$('progress').setAttribute('aria-valuenow',Math.min(700,total).toFixed(2));
+  $('left').textContent=total>=700?'You reached your £700 goal! 🎉':money(700-total)+' left to save';
+  $('cheer').textContent=total>=700?'YOU DID IT! £700 saved! Time for a little celebration! 🎉':total===0?'Get cosy, take your time, and watch it grow. ✨':`Lovely progress! You've saved ${money(total)} so far. Keep going! 🌟`;
+  const history=$('history');history.replaceChildren();
+  if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='Your history will appear here. Add your first sale or savings entry above! 🎄';history.append(empty);return;}
+  [...entries].reverse().forEach(e=>{
+   const row=document.createElement('div');row.className='entry';
+   const symbol=document.createElement('div');symbol.className='symbol';symbol.textContent=e.type==='sale'?'🛍️':'💷';
+   const details=document.createElement('div');details.className='details';
+   const name=document.createElement('div');name.className='name';name.textContent=e.title;
+   const date=document.createElement('div');date.className='date';date.textContent=new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+(e.type==='sale'?' · Sale':' · Savings added');
+   details.append(name,date);
+   const right=document.createElement('div');right.className='right';
+   const amount=document.createElement('div');amount.className='amount';amount.textContent='+'+money(e.amount);
+   const del=document.createElement('button');del.className='delete';del.type='button';del.textContent='Remove';del.setAttribute('aria-label','Remove '+e.title);
+   del.addEventListener('click',()=>{if(confirm('Remove "'+e.title+'" from your savings history?')){entries=entries.filter(x=>x.id!==e.id);save();render();}});
+   right.append(amount,del);row.append(symbol,details,right);history.append(row);
+  });
+ }
+ function add(type,title,amount){
+  entries.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,8),type,title,amount:Math.round(amount*100)/100,date:new Date().toISOString()});
+  save();render();
+ }
+ $('saleForm').addEventListener('submit',e=>{
+  e.preventDefault();const title=$('item').value.trim(),amount=Number($('saleAmount').value);
+  if(!title||!Number.isFinite(amount)||amount<=0||amount>100000){alert('Please enter what you sold and a valid amount.');return;}
+  add('sale',title,amount);e.target.reset();$('item').focus();
+ });
+ $('otherForm').addEventListener('submit',e=>{
+  e.preventDefault();const title=$('source').value.trim()||'Savings added',amount=Number($('otherAmount').value);
+  if(!Number.isFinite(amount)||amount<=0||amount>100000){alert('Please enter a valid amount.');return;}
+  add('other',title,amount);e.target.reset();$('source').focus();
+ });
+ function download(filename,content,type){
+  const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ }
+ $('exportCsv').addEventListener('click',()=>{
+  const rows=[['Type','Description','Amount (£)','Date'],...entries.map(e=>[e.type==='sale'?'Sale':'Savings added',e.title,e.amount.toFixed(2),new Date(e.date).toLocaleDateString('en-GB')])];
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  download('my-savings-history.csv','\ufeff'+csv,'text/csv;charset=utf-8');
+ });
+ $('backup').addEventListener('click',()=>download('my-700-savings-backup.json',JSON.stringify({version:2,goal:700,entries},null,2),'application/json'));
+ $('restore').addEventListener('click',()=>$('restoreFile').click());
+ $('restoreFile').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  try{
+   const parsed=JSON.parse(await file.text()),restored=clean(Array.isArray(parsed)?parsed:parsed.entries);
+   if(!Array.isArray(parsed)&&(!parsed||!Array.isArray(parsed.entries)))throw new Error('Invalid backup');
+   if(!confirm(`Restore ${restored.length} entries? This replaces the entries currently on this device.`))return;
+   entries=restored;save();render();alert('Backup restored!');
+  }catch{alert('That backup file could not be read. Please choose a backup made by this tracker.');}
+  finally{e.target.value='';}
+ });
+ render();
+ if(entries.length)$('saveStatus').textContent='Your savings have been loaded from this device';
+})();
+</script>
+</body>
+</html>
